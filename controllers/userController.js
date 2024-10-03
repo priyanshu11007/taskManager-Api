@@ -70,7 +70,7 @@ exports.login = async(req,res,next)=>{
         next();
     }
 }
-exports.protect = catchAsync(async (req, res, next) => {
+exports.protect = async (req, res, next) => {
     // 1) getting token and check of it's there
     let token;
     if (
@@ -78,9 +78,10 @@ exports.protect = catchAsync(async (req, res, next) => {
       req.headers.authorization.startsWith('Bearer')
     ) {
       token = req.headers.authorization.split(' ')[1];
-    } else if (req.cookies.jwt) {
-      token = req.cookies.jwt;
-    }
+    } 
+    // else if (req.cookies.jwt) {
+    //   token = req.cookies.jwt;
+    // }
     if (!token) {
       res.status(401).json({
         message:"You are not logged in"
@@ -88,11 +89,11 @@ exports.protect = catchAsync(async (req, res, next) => {
     }
     // 2) Token Verification
     const decoded = await jwt.verify(token, JWT_SECRET);
-    console.log(decoded);
+   
   
     // 3)check if user still exists
     const freshUser = await User.findById(decoded.id);
-    console.log('freshUser', freshUser);
+   
     if (!freshUser) {
       res.status(401).json({
         message:"user does not exist"
@@ -102,4 +103,4 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.user = freshUser;
     res.locals.user=freshUser;
     next();
-  });
+  };

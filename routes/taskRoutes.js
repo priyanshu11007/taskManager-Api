@@ -3,7 +3,7 @@ const router = express.Router();
 const taskController = require('./../controllers/taskController');
 const userController= require('./../controllers/userController');
 
-router.get('/', taskController.getAllTasks);
+router.get('/',userController.protect, taskController.getAllTasks);
 router.post('/',userController.protect, taskController.createTask);
 router.get('/:id',userController.protect,taskController.getTaskById);
 router.patch('/:id',userController.protect, taskController.updateTask);

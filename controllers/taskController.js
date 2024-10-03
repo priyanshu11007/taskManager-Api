@@ -2,12 +2,18 @@ const express= require('express');
 const Task = require('../models/task');
 
 exports.getAllTasks = async(req,res)=>{
-    
+    try{
     const task = await Task.find();
     res.status(200).json({
         status:"success",
         data: task
     })
+}
+catch(err){
+    res.status(401).json({
+        message:"You are not logged in"
+    })
+}
 }
 
 exports.createTask = async(req,res)=>{
