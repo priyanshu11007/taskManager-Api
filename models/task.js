@@ -17,6 +17,11 @@ const TaskSchema = new mongoose.Schema({
     },
     dueDate:{
         type:Date
+    },
+    user :{
+        type : mongoose.Schema.ObjectId,
+        ref:'User',
+        required:[true,'A user must be there for a task']
     }
 })
 
