@@ -22,6 +22,9 @@ exports.signup = async(req,res,next)=>{
     ),
     httpOnly:true
     });
+    const userWithoutPassword = user.toObject();
+    delete userWithoutPassword.password;
+    delete userWithoutPassword.__v;
     res.status(201).json({
         status:"created",
         token:token,
@@ -56,10 +59,14 @@ exports.login = async(req,res,next)=>{
             httpOnly:true
         });
 
+        const userWithoutPassword = user.toObject();
+        delete userWithoutPassword.password;
+        delete userWithoutPassword.__v;
+
         res.status(200).json({
             status:"success",
             token: token,
-            data: user
+            data: userWithoutPassword
         });
         next();
 
